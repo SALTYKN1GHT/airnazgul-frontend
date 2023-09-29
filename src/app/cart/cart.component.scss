@@ -1,0 +1,86 @@
+h1{
+    color: whitesmoke;
+}
+
+.ticket{
+    margin-bottom: 20px;
+    background-color:whitesmoke;
+    padding: 20px;
+    border: 1px solid rgba(169, 169, 169);
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(169, 169, 169, 0.8);
+}
+
+.img-fluid {
+    max-height: 140px;
+    padding: 5px;
+}
+
+.price{
+    padding-top: 10px;
+    font-size: 45px;
+    font-weight: 700;
+}
+
+.itemNo{
+    color:darkgray;
+    font-size: small;
+    font-weight: normal;
+}
+
+.time {
+    padding-top: 15px;
+    font-size: 30px;
+    font-weight: 500;
+}
+
+.card-text{
+    background-color:whitesmoke;
+    padding: 10px;
+    border: 1px solid rgba(169, 169, 169);
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(169, 169, 169, 0.8);
+    margin-top: 50px; 
+}
+
+.buy{
+    border-top: 2px dotted darkgray; 
+    margin-top: 20px;
+    padding: 20px 200px 0;
+}
+
+.btn{
+    background-color: whitesmoke;
+    color:black;
+    border: 2px solid rgba(169, 169, 169);
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(169, 169, 169, 0.8);
+   
+}
+
+.delete-btn{
+    margin-top: 20px;
+}
+
+.pass{
+    margin-bottom: 20px;
+    background-color:whitesmoke;
+    padding: 20px;
+    border: 1px solid rgba(169, 169, 169);
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(169, 169, 169, 0.8);
+}
+
+.submit{
+    font-weight: 500;
+}
+
+ @media (max-width: 807px){
+    .details {
+        text-align: left !important;
+      }
+
+      .misc{
+        margin-top: 50px;
+      }
+ }

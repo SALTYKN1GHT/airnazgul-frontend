@@ -1,0 +1,18 @@
+<div class="ticket-list">
+  <app-destinations-input></app-destinations-input>
+  <div class="filter"></div>
+  <div class="tickets">
+    <div class="departures">
+      <h5>Departures</h5>
+      <app-ticket *ngFor="let ticket of departures" [inputTicket]="ticket"></app-ticket>
+    </div>
+    <div class="returns">
+      <h5>Returns</h5>
+      <app-ticket *ngFor="let ticket of returns" [inputTicket]="ticket"></app-ticket>
+    </div>
+  </div>
+  <div class="passes">
+    <h2>PASS OFFERSS <span>- BEST PRICE per FLIGHT</span></h2>
+  </div>
+  <app-pass></app-pass>
+</div>

@@ -1,0 +1,46 @@
+<div class="container">
+  <div class="card p-2">
+    <h5>TICKETS</h5>
+    <div class="searchbar d-flex align-items-center justify-content-center gap-5">
+      <div>
+        <div>From:</div>
+        <app-dest-list
+          class="inputField"
+          [destList]="getRidOfMordor()"
+          [searchBarType]="'Realm, settlement...'"
+          (searchListChangeEvent)="addItem($event)"
+          (onSelect)="getDestinations($event, 0)"
+        ></app-dest-list>
+      </div>
+      <div>
+        <div>To:</div>
+        <app-dest-list
+          class="inputField"
+          [destList]="filteredDestination"
+          [searchBarType]="'Realm, settlement...'"
+          (searchListChangeEvent)="addItem($event)"
+          (onSelect)="getDestinations($event, 1)"
+        ></app-dest-list>
+        <p id="reminder" *ngIf="noReturn">Remember: No return from Mordor!</p>
+      </div>
+      <div>
+        <div>Departure</div>
+        <app-datepicker [disabledDates]="blacklistedDates" (onSelect)="blackListDate($event, 0)"></app-datepicker>
+      </div>
+      <div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" [disabled]="noReturn" (change)="getCheckStatus($event)" />
+          <label class="form-check-label" for="Return"> Return </label>
+        </div>
+        <app-datepicker
+          [disabledDates]="blacklistedDates"
+          (onSelect)="blackListDate($event, 1)"
+          [disabled]="returnChecked"
+        ></app-datepicker>
+      </div>
+      <div>
+        <button class="btn btn-outline-success" type="submit" (click)="onSearch()">Search</button>
+      </div>
+    </div>
+  </div>
+</div>

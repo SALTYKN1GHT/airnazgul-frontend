@@ -1,0 +1,18 @@
+<div class="container border rounded bg-white p-4">
+    <div class="row">
+        <div class="col-md-4">
+            <img [src]="imagePath" alt="{{ realm }}" class="img-fluid rounded">
+        </div>
+        <div class="col-md-4">
+            <h3>{{ realm | uppercase }} PASS</h3>
+            <ul>
+                <li *ngFor="let settlement of settlements">{{ settlement }}</li>
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <p>Visit all locations of a realm for less money!</p>
+            <h4>Price: {{ price }} $</h4>
+            <button class="btn btn-primary">SHOP NOW! <fa-icon [icon]="faShoppingCart"></fa-icon></button>
+        </div>
+    </div>
+</div>

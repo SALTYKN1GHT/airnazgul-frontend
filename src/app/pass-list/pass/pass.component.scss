@@ -1,0 +1,13 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box !important;
+}
+
+.container {
+    margin: 10px;
+}
+
+ul {
+    list-style-type: circle;
+}

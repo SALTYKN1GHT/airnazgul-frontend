@@ -1,0 +1,100 @@
+<div class="cart col text-center">
+  <!-- tickets -->
+  <h1>Your Tickets</h1>
+  <div class="container-fluid ticket" *ngFor="let orderDetail of orderDetails">
+    <div class="row justify-content-between">
+      <div class="col-md-auto row departure">
+        <div class="col-md-auto icon">
+          <img
+            [src]="orderDetail.imagePathDeparture"
+            alt="{{ orderDetail.departure.settlement }}"
+            class="img-fluid rounded"
+          />
+        </div>
+        <div class="col-md-auto details">
+          <span>Depart at</span>
+          <div class="time">{{ orderDetail.departureTime }}</div>
+          <div class="date">{{ orderDetail.date }}</div>
+          <div class="location">
+            {{ orderDetail.departure.dest_code }} - {{ orderDetail.departure.settlement }},
+            {{ orderDetail.departure.realm }}
+          </div>
+        </div>
+      </div>
+      <div class="col-md-auto row flex-row-reverse arrival">
+        <div class="col-md-auto icon">
+          <img
+            [src]="orderDetail.imagePathArrival"
+            alt="{{ orderDetail.arrival.settlement }}"
+            class="img-fluid rounded"
+          />
+        </div>
+        <div class="col-md-auto text-end details">
+          <span>Arrive at</span>
+          <div class="time">{{ orderDetail.arrivalTime }}</div>
+          <div class="date">{{ orderDetail.date }}</div>
+          <div class="location">
+            {{ orderDetail.arrival.dest_code }} - {{ orderDetail.arrival.settlement }}, {{ orderDetail.arrival.realm }}
+          </div>
+        </div>
+      </div>
+      <div class="col-md-auto misc">
+        <div class="distance-time">dist. {{ orderDetail.distance }} km | time {{ orderDetail.flightTime }}</div>
+        <div class="row shop">
+          <div class="col-md-auto price">
+            {{ orderDetail.price }} $
+            <div class="itemNo">persons (tax included)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="buy row justify-content-between">
+      <div class="amount row">
+        <a href="#" class="btn btn-primary increase col" (click)="increaseQuantity(orderDetail)">+</a>
+        <p class="pieces col">piece(s)</p>
+        <a href="#" class="btn btn-primary decrease col" (click)="decreaseQuantity(orderDetail)">-</a>
+      </div>
+      <div class="delete row">
+        <a href="#" class="btn btn-primary delete-btn" (click)="deleteOrder(orderDetail)">Delete Order</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- passes -->
+  <h1>Your Passes</h1>
+  <div class="container-fluid pass" *ngFor="let passDetail of passDetails">
+    <div class="row justify-content-around">
+      <div class="col-md-auto">
+        <h3>{{ passDetail.realm | uppercase }}</h3>
+        <ul>
+          <li *ngFor="let settlement of passDetail.settlements">{{ settlement }}</li>
+        </ul>
+      </div>
+      <div class="col-md-auto">
+        <img [src]="passDetail.imagePath" alt="{{ passDetail.realm }}" class="img-fluid rounded" />
+      </div>
+      <div class="col-md-auto price">
+        <div class="col-md-auto price">
+          {{ passDetail.price }} $
+          <div class="itemNo">persons (tax included)</div>
+        </div>
+      </div>
+    </div>
+    <div class="buy row justify-content-between">
+      <div class="amount row">
+        <a href="#" class="btn btn-primary increase col" (click)="increaseQuantity(passDetail)">+</a>
+        <p class="pieces col">piece(s)</p>
+        <a href="#" class="btn btn-primary decrease col" (click)="decreaseQuantity(passDetail)">-</a>
+      </div>
+      <div class="delete row">
+        <a href="#" class="btn btn-primary delete-btn" (click)="deleteOrder(passDetail)">Delete Order</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- total price, submit -->
+
+  <h3 class="card-text">Total Price: {{ this.totalPrice }} $</h3>
+
+  <a href="#" class="btn btn-primary submit mt-4" (click)="submitOrder()">Submit Order</a>
+</div>

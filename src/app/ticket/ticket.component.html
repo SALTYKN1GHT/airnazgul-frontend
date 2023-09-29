@@ -1,0 +1,36 @@
+
+<div *ngIf="inputTicket" class=" container-fluid ticket">
+  <div class="row justify-content-between">
+    <div class="col-md-auto row departure">
+      <div class=" col-md-auto icon">
+        <img [src]="imagePathDeparture" alt="{{ inputTicket.departure.settlement }}" class="img-fluid rounded">
+      </div>
+      <div class=" col-md-auto details">
+        <span>Depart at</span>
+        <div class="time">{{inputTicket.departureTime | date}}</div>
+        <div class="date">{{inputTicket.date | date:"HH:mm"}}</div>
+        <div class="location">{{inputTicket.departure.dest_code}} - {{inputTicket.departure.settlement}}, {{inputTicket.departure.realm}}</div>
+      </div>
+    </div>
+    <div class="col-md-auto row  flex-row-reverse arrival">
+      <div class="col-md-auto icon">
+        <img [src]="imagePathArrival" alt="{{ inputTicket.arrival.settlement }}" class="img-fluid rounded">
+      </div>
+      <div class=" col-md-auto text-end details">
+        <span>Arrive at</span>
+        <div class="time">{{inputTicket.arrivalTime | date}}</div>
+        <div class="date">{{inputTicket.date | date:"HH:mm"}}</div>
+        <div class="location">{{inputTicket.arrival.dest_code}} - {{inputTicket.arrival.settlement}}, {{inputTicket.arrival.realm}}</div>
+      </div>
+    </div>
+    <div class="col-md-auto misc">
+      <div class="distance-time">dist. {{inputTicket.distance}} km | time {{inputTicket.flightTime}}</div>
+      <div class="row shop">
+        <div class="col-md-auto price">{{ inputTicket.price }} $
+          <div class="itemNo">2 persons (tax included)</div>
+        </div>
+        <button class="col-md-auto btn btn-primary"><fa-icon [icon]="faShoppingCart"></fa-icon></button>
+      </div>
+    </div>
+  </div>
+</div>
