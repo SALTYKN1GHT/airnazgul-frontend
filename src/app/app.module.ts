@@ -27,6 +27,9 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { PersonalInfoComponent } from './personal-info/personal-info.component';
 import { BillingInfoComponent } from './billing-info/billing-info.component';
 import { ProfileComponent } from './profile/profile.component';
+import { AirnazgulSvgComponent } from './airnazgul-svg/airnazgul-svg.component';
+import { CarouselModule } from '@coreui/angular';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -50,8 +53,17 @@ import { ProfileComponent } from './profile/profile.component';
     PersonalInfoComponent,
     BillingInfoComponent,
     ProfileComponent,
+    AirnazgulSvgComponent,
   ],
-  imports: [BrowserModule, FormsModule, AppRoutingModule, HttpClientModule, FontAwesomeModule],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FontAwesomeModule,
+    CarouselModule,
+    BrowserAnimationsModule,
+  ],
   providers: [
     NotificationService,
     {

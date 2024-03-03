@@ -1,13 +1,18 @@
-<div class="container">
-  <nav class="navbar navbar-expand-xl navbar-light bg-transparent">
-    <div class="logo">
-      <div class="title">
-        <h1>Airnazgul</h1>
-        <h2>explore middle earth with us</h2>
-      </div>
-      <img class="rounded" src="../../assets/images/nazgul_logov1.png" alt="Logo" />
+<div class="flex justify-between pt-3 bg-transparent text-neutral-100">
+  <div class="flex gap-2">
+    <div class="flex flex-col items-end justify-between h-14">
+      <h1 class="text-4xl uppercase font-bold -mt-1.5">Airnazgul</h1>
+      <h2 class="-mb-1">explore middle earth with us</h2>
     </div>
-    <button
+    <img
+      class="bg-white rounded w-14 h-14"
+      src="../../assets/images/nazgul_logov1.png"
+      alt="Logo"
+    />
+  </div>
+  <!-- BUTTON FOR COLLAPSED NAVBAR -->
+  <!-- <button
+
       class="navbar-toggler"
       type="button"
       data-bs-toggle="collapse"
@@ -17,52 +22,59 @@
       aria-label="Toggle navigation"
     >
       <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="nav-right">
-      <div class="collapse navbar-collapse d-flex flex-row">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link" aria-current="page" routerLink="/">Home</a>
-          </li>
-          <li class="nav-item">
-            <a
-              href=""
-              class="nav-link"
-              (click)="openModal()"
-              data-bs-toggle="modal"
-              data-bs-target="#loginModal"
-              *ngIf="!loggedIn"
-              >Login</a
-            >
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="" *ngIf="loggedIn" (click)="logout()">Logout</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/pass-list">Tours</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/about">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/contact">Contact</a>
-          </li>
-          <li class="cart-icon">
-            <a routerLink="/cart">
-              <fa-icon [icon]="faShoppingCart"></fa-icon>
-            </a>
-          </li>
-        </ul>
+    </button> -->
+
+  <div>
+    <nav class="flex flex-row text-xl -mt-1.5 uppercase justify-end gap-4">
+      <div>
+        <a class="nav-link" aria-current="page" routerLink="/">Home</a>
       </div>
-      <div class="navbar justify-content-end p-0" *ngIf="validateAccessToken()">
-        <div>you are logged in as:&nbsp;</div>
-        <a class="login" routerLink="/userprofile">{{ userName }}</a>
+      <div>
+        <a
+          role="button"
+          class="nav-link"
+          (click)="showLogin(true)"
+          *ngIf="!loggedIn"
+          >Login</a
+        >
       </div>
+      <div *ngIf="loggedIn" (click)="logout()">
+        <a class="nav-link" href="">Logout</a>
+      </div>
+      <div>
+        <a class="nav-link" href="" routerLink="/pass-list">Pass</a>
+      </div>
+      <div>
+        <a class="nav-link" href="" routerLink="/about">About</a>
+      </div>
+      <div>
+        <a class="nav-link" href="" routerLink="/contact">Contact</a>
+      </div>
+      <div>
+        <a routerLink="/cart">
+          <fa-icon [icon]="faShoppingCart"></fa-icon>
+        </a>
+      </div>
+    </nav>
+    <div
+      class="flex justify-end gap-3 p-0 font-thin"
+      *ngIf="validateAccessToken()"
+    >
+      <div>you are logged in as:&nbsp;</div>
+      <a class="login" routerLink="/userprofile">{{ userName }}</a>
     </div>
-  </nav>
+  </div>
 </div>
+
 <app-login
   [loginVisible]="loginVisible"
-  (modalStateChange)="receiveModalState($event)"
+  (onRegister)="showRegister($event)"
   (userLoginEvent)="receiveUserLoginEvent($event)"
+  (onClose)="showLogin($event)"
 ></app-login>
+<app-register
+  [registerVisible]="registerVisible"
+  (onBackToLogin)="showLogin($event)"
+  (onClose)="showRegister($event)"
+>
+</app-register>

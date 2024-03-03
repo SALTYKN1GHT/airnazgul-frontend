@@ -18,7 +18,7 @@ export class AppComponent {
   }
 
   fetchTicketData() {
-    this.httpService.get('ticket').subscribe(response => {
+    this.httpService.get('tickets').subscribe((response) => {
       // console.log(response);
       // Do something with the ticket data
     });

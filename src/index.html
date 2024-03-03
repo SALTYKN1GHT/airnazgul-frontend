@@ -8,7 +8,16 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
   </head>
 
-  <body class="bg-black">
-    <app-root></app-root>
+  <body
+    class="relative flex justify-center w-screen h-screen mx-auto text-black bg-transparent"
+  >
+    <img
+      class="absolute object-cover h-full -z-10"
+      src="./assets/images/minas_morgul.png"
+      alt=""
+    />
+    <div class="h-full w-[80vh] overflow-y-auto">
+      <app-root></app-root>
+    </div>
   </body>
 </html>

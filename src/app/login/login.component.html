@@ -1,85 +1,67 @@
-<!-- Modal Background -->
-<div class="overlay" *ngIf="loginVisible"></div>
-<!-- Login Modal -->
-<div
-  class="modal fade"
-  id="loginModal"
-  data-mdb-backdrop="false"
-  data-bs-backdrop="static"
-  data-bs-keyboard="false"
-  aria-hidden="true"
-  aria-labelledby="exampleModalToggleLabel"
-  tabindex="-1"
->
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <form (ngSubmit)="onSubmit(loginForm)" #loginForm="ngForm">
-        <div class="modal-header">
-          <div class="close justify-content-end">
-            <button
-              #CloseButton
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-              (click)="closeModal()"
-            ></button>
-          </div>
-          <div class="modal-header p-0">
-            <h2 class="modal-title" id="loginModalLabel">Welcome</h2>
-          </div>
-        </div>
-        <div class="modal-body">
-          <h5>Login</h5>
+<div *ngIf="loginVisible">
+  <div class="absolute top-0 bottom-0 left-0 right-0 z-50 backdrop-blur"></div>
 
+  <div
+    class="absolute top-0 bottom-0 left-0 right-0 z-50 flex items-center justify-center"
+  >
+    <div
+      class="relative flex flex-col max-w-lg gap-4 px-12 py-3 mx-auto text-gray-600 bg-white rounded-2xl font-outfit"
+    >
+      <div class="absolute self-end top-2 right-3">
+        <button class="p-3 cursor-pointer" (click)="closeModal()">X</button>
+      </div>
+      <h3 class="self-center mt-8 text-2xl font-bold text-black">
+        Welcome back!
+      </h3>
+      <div class="pl-3 font-medium text-black">Login</div>
+      <form
+        (ngSubmit)="onSubmit(loginForm)"
+        #loginForm="ngForm"
+        class="flex flex-col gap-3"
+      >
+        <div>
           <input
-            type="email"
-            class="def-input m-0 mb-4"
             [ngClass]="{
-              'green-border': passValidateStatus && !defEmailInputClass,
-              'red-border': !passValidateStatus && !defEmailInputClass
+              'green-border': !!userObject,
+              'red-border': userObject === null
             }"
-            id="loginemail"
             name="email"
+            class="w-full px-3 py-1 border border-gray-400 rounded-lg focus:outline-none"
+            type="text"
             placeholder="Email:"
-            required
             [(ngModel)]="formData.email"
           />
-          <div class="input-container">
-            <div class="pass-field d-flex flex-row-reverse">
-              <input
-                class="def-input m-0 mb-0 pb-2"
-                [ngClass]="{
-                  'green-border': passValidateStatus && !defPassInputClass,
-                  'red-border': !passValidateStatus && !defPassInputClass
-                }"
-                type="password"
-                id="password"
-                name="password"
-                placeholder="Password:"
-                required
-                [(ngModel)]="formData.password"
-              />
-              <span (click)="togglePassword($event)" class="toggle-password">
-                <fa-icon [icon]="showPassword ? faEyeSlash : faEye"></fa-icon>
-              </span>
-            </div>
-            <div>
-              <p class="m-0 p-0 red-text" *ngIf="passValidateMsgVisible">
-                {{ passValidateMsg }}
-              </p>
-            </div>
-          </div>
         </div>
-        <div class="modal-footer flex-column align-items-end border-0">
+        <div>
+          <input
+            [ngClass]="{
+              'green-border': !!userObject,
+              'red-border': userObject === null
+            }"
+            name="password"
+            class="w-full px-3 py-1 border border-gray-400 rounded-lg input focus:outline-none"
+            type="password"
+            placeholder="Password:"
+            [(ngModel)]="formData.password"
+          />
+        </div>
+        <div>
+          <p class="p-0 m-0 red-text" *ngIf="userObject === null">
+            {{ passValidateMsg }}
+          </p>
+        </div>
+        <div class="pl-3 text-sm"><a href="">Forgot your password?</a></div>
+        <div class="self-end text-right">
+          <button
+            type="submit"
+            class="px-3 py-2 text-white cursor-pointer rounded-xl bg-[#2D4946]"
+          >
+            Log in
+          </button>
           <div>
-            <button type="submit" class="btn btn-primary" id="submit">Login</button>
-          </div>
-          <div>
-            <p>
-              Dont have account yet? Register
-              <a data-bs-target="#registerModal" data-bs-toggle="modal">here!</a>
-            </p>
+            Don't have an account yet? Register:
+            <a class="underline" role="button" (click)="showRegister()">here</a
+            >!
           </div>
         </div>
       </form>
@@ -87,7 +69,7 @@
   </div>
 </div>
 <!-- Sign Up Modal -->
-<div
+<!-- <div
   class="modal fade"
   id="registerModal"
   data-mdb-backdrop="false"
@@ -110,7 +92,7 @@
             (click)="closeModal()"
           ></button>
         </div>
-        <div class="modal-header p-0">
+        <div class="p-0 modal-header">
           <h2 class="modal-title" id="loginModalLabel">Sign Up</h2>
         </div>
       </div>
@@ -118,7 +100,7 @@
       <div class="modal-body">
         <div class="input-container">
           <input
-            class="def-input m-0 mb-1"
+            class="m-0 mb-1 def-input"
             [ngClass]="{
               'green-border': userValidateStatus && !defUserInputClass,
               'red-border': !userValidateStatus && !defUserInputClass
@@ -131,7 +113,7 @@
             [(ngModel)]="registerData.userName"
           />
           <p
-            class="m-0 p-0"
+            class="p-0 m-0"
             *ngIf="userValidateMsgVisible"
             [ngClass]="{
               'green-text': userValidateStatus,
@@ -143,7 +125,7 @@
         </div>
         <div class="input-container">
           <input
-            class="def-input m-0 mb-1"
+            class="m-0 mb-1 def-input"
             [ngClass]="{
               'green-border': emailValidateStatus && !defEmailInputClass,
               'red-border': !emailValidateStatus && !defEmailInputClass
@@ -157,7 +139,7 @@
             [(ngModel)]="registerData.email"
           />
           <p
-            class="m-0 p-0"
+            class="p-0 m-0"
             *ngIf="emailValidateMsgVisible"
             [ngClass]="{
               'green-text': emailValidateStatus,
@@ -168,9 +150,9 @@
           </p>
         </div>
         <div class="input-container">
-          <div class="pass-field d-flex flex-row-reverse">
+          <div class="flex-row-reverse pass-field d-flex">
             <input
-              class="def-input m-0 mb-1"
+              class="m-0 mb-1 def-input"
               [ngClass]="{
                 'green-border': passValidateStatus && !defPassInputClass,
                 'red-border': !passValidateStatus && !defPassInputClass
@@ -187,8 +169,8 @@
               <fa-icon [icon]="showPassword ? faEyeSlash : faEye"></fa-icon>
             </span>
           </div>
-          <div class="pass-valid-container mt-1" *ngIf="passValidateMsgVisible">
-            <p class="m-0 p-0">Password must contain:</p>
+          <div class="mt-1 pass-valid-container" *ngIf="passValidateMsgVisible">
+            <p class="p-0 m-0">Password must contain:</p>
             <ul>
               <li
                 [ngClass]="{
@@ -244,7 +226,7 @@
           </div>
         </div>
       </div>
-      <div class="modal-footer flex-column align-items-end border-0">
+      <div class="border-0 modal-footer flex-column align-items-end">
         <div>
           <button type="submit" class="btn btn-primary" id="submit">Register</button>
         </div>
@@ -261,4 +243,4 @@
     </p>
     </div>
   </div>
-</div>
+</div> -->

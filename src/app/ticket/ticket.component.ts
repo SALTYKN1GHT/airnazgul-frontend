@@ -15,17 +15,13 @@ export class TicketComponent {
   imagePathArrival: string = '';
 
   ngOnInit() {
-    console.log(this.inputTicket);
-    this.imagePathDeparture = `assets/images/dest_profile_pics/${this.convertToUnderscoreFormat(
-      this.inputTicket.departure.settlement
-    )}.png`;
+    this.imagePathDeparture = `assets/images/dest_profile_pics/shire.png`;
     this.imagePathArrival = `assets/images/dest_profile_pics/${this.convertToUnderscoreFormat(
       this.inputTicket.arrival.settlement
     )}.png`;
   }
 
   convertToUnderscoreFormat(text: string) {
-    console.log(text);
     const result = text.toLowerCase().replace(/\s+/g, '-');
     console.log(result);
 

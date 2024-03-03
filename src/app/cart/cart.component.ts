@@ -8,7 +8,12 @@ import { Component, OnInit } from '@angular/core';
 export class CartComponent implements OnInit {
   orderDetails: any[] = [
     {
-      departure: { dest_code: 'EDO', settlement: 'Edoras', realm: 'Rohan', imagePath: '' },
+      departure: {
+        dest_code: 'EDO',
+        settlement: 'Edoras',
+        realm: 'Rohan',
+        imagePath: '',
+      },
       arrival: { dest_code: 'LHR', settlement: 'Linhir', realm: 'Gondor' },
       departureTime: '13.00',
       arrivalTime: '15.50',
@@ -57,18 +62,18 @@ export class CartComponent implements OnInit {
 
     this.calculateTotalPrice();
 
-    for (let orderDetail of this.orderDetails) {
-      orderDetail.imagePathDeparture = `assets/images/dest_profile_pics/${this.convertToUnderscoreFormat(
-        orderDetail.departure.settlement
-      )}.png`;
-      orderDetail.imagePathArrival = `assets/images/dest_profile_pics/${this.convertToUnderscoreFormat(
-        orderDetail.arrival.settlement
-      )}.png`;
-    }
+    // for (let orderDetail of this.orderDetails) {
+    //   orderDetail.imagePathDeparture = `assets/images/dest_profile_pics/${this.convertToUnderscoreFormat(
+    //     orderDetail.departure.settlement
+    //   )}.png`;
+    //   orderDetail.imagePathArrival = `assets/images/dest_profile_pics/${this.convertToUnderscoreFormat(
+    //     orderDetail.arrival.settlement
+    //   )}.png`;
+    // }
 
-    for (let passDetail of this.passDetails) {
-      passDetail.imagePath = `assets/images/pass_cards/${passDetail.realm.toLowerCase()}.png`;
-    }
+    // for (let passDetail of this.passDetails) {
+    //   passDetail.imagePath = `assets/images/pass_cards/${passDetail.realm.toLowerCase()}.png`;
+    // }
   }
 
   convertToUnderscoreFormat(text: string) {

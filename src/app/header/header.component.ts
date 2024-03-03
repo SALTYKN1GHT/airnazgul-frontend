@@ -10,6 +10,8 @@ import { AuthenticationService } from 'src/services/authentication.service';
 })
 export class HeaderComponent implements OnInit {
   public loginVisible: boolean = false;
+  public registerVisible: boolean = false;
+
   public userName: string = '';
   public loggedIn: boolean = false;
 
@@ -19,12 +21,16 @@ export class HeaderComponent implements OnInit {
     this.userName = this.authService.getUsername() || '';
     this.loggedIn = this.validateAccessToken();
   }
-  openModal() {
-    this.loginVisible = true;
+
+  showRegister(event: boolean) {
+    this.registerVisible = event;
   }
-  receiveModalState(event: boolean) {
+
+  showLogin(event: boolean) {
     this.loginVisible = event;
+    console.log('This.loginvisible in showlogin:', this.loginVisible);
   }
+
   receiveUserLoginEvent(userObj: User['user']) {
     this.userName = userObj.userName;
     this.loginVisible = false;

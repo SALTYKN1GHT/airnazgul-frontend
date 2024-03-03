@@ -24,15 +24,8 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": ["src/favicon.ico", "src/assets"],
-            "styles": [
-              "src/styles.scss",
-              "node_modules/bootstrap/scss/bootstrap.scss",
-              "node_modules/flatpickr/dist/flatpickr.min.css"
-            ],
-            "scripts": [
-              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
-              "node_modules/flatpickr/dist/flatpickr.min.js"
-            ],
+            "styles": ["src/styles.scss"],
+            "scripts": [],
             "customWebpackConfig": {
               "path": "./custom-webpack.config.ts"
             }

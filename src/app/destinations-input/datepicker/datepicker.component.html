@@ -1,19 +1,33 @@
-<div class="content" #calendarContainer>
+<div class="relative items-center" #calendarContainer>
   <input
     [disabled]="disabled"
     id="datepicker-input"
-    class="form-control"
+    class="h-8 px-3 py-2 border outline-none rounded-xl shadow-sharp"
     placeholder="Pick a date"
     type="text"
     [value]="actualDate"
     autocomplete="off"
     (click)="onInputFieldClick()"
   />
-  <div class="rounded" *ngIf="calendarVisible">
-    <div class="calendar-header" (click)="onSwitchMonth()" *ngIf="dayVisible">{{ month }}</div>
-    <div class="calendar-header" (click)="onSwitchYear()" *ngIf="monthVisible || yearVisible">{{ year }}</div>
+  <div
+    class="absolute z-40 overflow-hidden rounded-lg top-[110%] left-1/2 -translate-x-1/2"
+    *ngIf="calendarVisible"
+  >
+    <div class="calendar-header" (click)="onSwitchMonth()" *ngIf="dayVisible">
+      {{ month }}
+    </div>
+    <div
+      class="calendar-header"
+      (click)="onSwitchYear()"
+      *ngIf="monthVisible || yearVisible"
+    >
+      {{ year }}
+    </div>
     <div class="calendar month" *ngIf="monthVisible">
-      <div *ngFor="let item of monthList; let i = index" (click)="onMonthClick(item, i)">
+      <div
+        *ngFor="let item of monthList; let i = index"
+        (click)="onMonthClick(item, i)"
+      >
         {{ item }}
       </div>
     </div>
@@ -26,7 +40,11 @@
       <div *ngFor="let day of calendar.previous" class="disabled">
         {{ day }}
       </div>
-      <div *ngFor="let day of calendar.current" [ngClass]="{ disabled: day.disabled }" (click)="onDayClick(day)">
+      <div
+        *ngFor="let day of calendar.current"
+        [ngClass]="{ disabled: day.disabled }"
+        (click)="onDayClick(day)"
+      >
         {{ day.value }}
       </div>
       <div *ngFor="let day of calendar.next" class="disabled">

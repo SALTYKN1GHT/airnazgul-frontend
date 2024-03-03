@@ -17,7 +17,7 @@ export class HttpService {
     ) as Observable<T>;
   }
 
-  post<T>(endpoint: string, params: string[]): Observable<T> {
+  post<T>(endpoint: string, params: Record<string, unknown>): Observable<T> {
     console.log(params);
     return this.httpClient.post(
       `${this.baseUrl}/api/${endpoint}`,

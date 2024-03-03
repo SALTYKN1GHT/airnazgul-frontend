@@ -3,6 +3,8 @@ import { HttpService } from './http.service';
 import { User } from 'src/interfaces/user';
 import { firstValueFrom } from 'rxjs';
 import { RegisteredUser } from '../interfaces/registeredUser';
+import { NgForm } from '@angular/forms';
+import { LoginSchema } from 'src/schemas/LoginSchema';
 
 @Injectable({
   providedIn: 'root',
@@ -34,7 +36,9 @@ export class AuthenticationService {
 
   async register(form: any): Promise<RegisteredUser | null> {
     console.log(form);
-    let response = await firstValueFrom(this.httpService.post<RegisteredUser>('user/register', form.value));
+    let response = await firstValueFrom(
+      this.httpService.post<RegisteredUser>('user/register', form.value)
+    );
     console.log(response);
     if (!!response.userName) {
       console.log(response);
@@ -44,8 +48,10 @@ export class AuthenticationService {
     return null;
   }
 
-  async login(form: any): Promise<User | null> {
-    let response = await firstValueFrom(this.httpService.post<User>('user/login', form.value));
+  async login(userObject: LoginSchema): Promise<User> {
+    let response = await firstValueFrom(
+      this.httpService.post<User>('user/login', userObject)
+    );
     if (!!response.token) {
       this.clearLocalStorage();
       this.setToken(response.token);
@@ -56,9 +62,9 @@ export class AuthenticationService {
 
     this.clearLocalStorage();
     console.log('Login denied');
-    return null;
+    throw new Error('Wrong username or password');
   }
-  
+
   logout(): void {
     this.clearLocalStorage();
   }

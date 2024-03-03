@@ -5,6 +5,8 @@ import { SearchInput } from 'src/interfaces/search-input';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpService } from 'src/services/http.service';
 import { Destination } from 'src/interfaces/destination';
+import { ActivatedRoute } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-ticket-list',
@@ -15,45 +17,55 @@ export class TicketListComponent implements OnInit {
   public departures: TicketViewModel[] = [];
   public returns: TicketViewModel[] = [];
 
-  searchInput: SearchInput;
-  public searchInputListener$: Observable<SearchInput>;
-  private searchInputCompleted: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  constructor(
+    private httpService: HttpService,
+    private activatedRoute: ActivatedRoute
+  ) {
+    this.activatedRoute.queryParams.subscribe(
+      async (input: Record<string, string>) => {
+        const from = await fetch(
+          `${environment.apiURL}/api/destinations/${input['from']}`,
+          { method: 'GET', headers: { 'Content-Type': 'application/json' } }
+        );
+        const fromJSON = await from.json();
 
-  constructor(private notificationService: NotificationService, private httpService: HttpService) {
-    this.searchInputListener$ = this.notificationService.searchInputListener$;
-    this.searchInputListener$.subscribe((input: SearchInput) => {
-      //departures
-      let createdTicket: TicketViewModel = {
-        departure: input.from,
-        arrival: input.to,
-        departureTime: input.departure,
-        arrivalTime: input.return,
-        date: Date.now().toString(),
-        distance: 258,
-        flightTime: '2h 10m',
-        price: 1000,
-      };
-
-      this.departures.push(createdTicket);
-      console.log(this.departures);
-
-      if (this.searchInput.checkstatus) {
-        //return
+        const to = await fetch(
+          `${environment.apiURL}/api/destinations/${input['to']}`,
+          { method: 'GET', headers: { 'Content-Type': 'application/json' } }
+        );
+        const toJSON = await to.json();
+        //departures
         let createdTicket: TicketViewModel = {
-          departure: input.from,
-          arrival: input.to,
-          departureTime: input.departure,
-          arrivalTime: input.return,
+          departure: fromJSON,
+          arrival: toJSON,
+          departureTime: new Date(input['departure']),
+          arrivalTime: new Date(input['return']),
           date: Date.now().toString(),
           distance: 258,
           flightTime: '2h 10m',
           price: 1000,
         };
 
-        this.returns.push(createdTicket);
-        console.log(this.returns);
+        this.departures.push(createdTicket);
+
+        if (input['checkstatus']) {
+          //return
+          let createdTicket: TicketViewModel = {
+            departure: fromJSON,
+            arrival: toJSON,
+            departureTime: new Date(input['departure']),
+            arrivalTime: new Date(input['return']),
+            date: Date.now().toString(),
+            distance: 258,
+            flightTime: '2h 10m',
+            price: 1000,
+          };
+
+          this.returns.push(createdTicket);
+        }
+        console.log(this.departures, this.returns);
       }
-    });
+    );
   }
 
   ngOnInit(): void {

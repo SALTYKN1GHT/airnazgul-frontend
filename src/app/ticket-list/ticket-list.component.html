@@ -1,14 +1,21 @@
-<div class="ticket-list">
+<div class="mt-4 bg-white rounded-xl ticket-list">
+  <h5 class="pt-2 pl-4 font-semibold">TICKETS AVAILABLE</h5>
   <app-destinations-input></app-destinations-input>
   <div class="filter"></div>
   <div class="tickets">
     <div class="departures">
       <h5>Departures</h5>
-      <app-ticket *ngFor="let ticket of departures" [inputTicket]="ticket"></app-ticket>
+      <app-ticket
+        *ngFor="let ticket of departures"
+        [inputTicket]="ticket"
+      ></app-ticket>
     </div>
     <div class="returns">
       <h5>Returns</h5>
-      <app-ticket *ngFor="let ticket of returns" [inputTicket]="ticket"></app-ticket>
+      <app-ticket
+        *ngFor="let ticket of returns"
+        [inputTicket]="ticket"
+      ></app-ticket>
     </div>
   </div>
   <div class="passes">

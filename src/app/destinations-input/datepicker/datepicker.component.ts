@@ -20,12 +20,16 @@ import { DisableDatesService } from 'src/services/disable-dates.service';
   templateUrl: './datepicker.component.html',
   styleUrls: ['./datepicker.component.scss'],
 })
-export class DatepickerComponent implements OnInit, AfterViewChecked, AfterViewInit {
+export class DatepickerComponent
+  implements OnInit, AfterViewChecked, AfterViewInit
+{
   @Input() public disabledDates: Date[] = [];
   @Input() public disabled: boolean = false;
   @Output('onSelect') public change = new EventEmitter<Date>();
-  @ViewChild('dateInputField') public dateInputField: ElementRef<HTMLInputElement>;
-  @ViewChild('calendarContainer') public calendarContainer: ElementRef<HTMLDivElement>;
+  @ViewChild('dateInputField')
+  public dateInputField: ElementRef<HTMLInputElement>;
+  @ViewChild('calendarContainer')
+  public calendarContainer: ElementRef<HTMLDivElement>;
 
   // public flatpickrObj: any = null;
 
@@ -56,11 +60,16 @@ export class DatepickerComponent implements OnInit, AfterViewChecked, AfterViewI
   public monthVisible: boolean = false;
   public dayVisible: boolean = true;
   public actualDate: string = '';
-  constructor(private calendarBuilder: CalendarBuilderService, private disabledDatesService: DisableDatesService) {}
+  constructor(
+    private calendarBuilder: CalendarBuilderService,
+    private disabledDatesService: DisableDatesService
+  ) {}
   ngAfterViewInit(): void {
     document.addEventListener('click', (event: MouseEvent) => {
       const clicktarget = event.target as HTMLDivElement;
-      if (!this.isDescendant(this.calendarContainer?.nativeElement, clicktarget)) {
+      if (
+        !this.isDescendant(this.calendarContainer?.nativeElement, clicktarget)
+      ) {
         this.calendarVisible = false;
       }
     });
@@ -75,7 +84,10 @@ export class DatepickerComponent implements OnInit, AfterViewChecked, AfterViewI
     this.year = date.toLocaleString('en-US', { year: 'numeric' });
     this.monthList = this.genList(12, 'month');
     this.yearList = this.genList(12, 'year');
-    this.calendar = this.calendarBuilder.buildMonth(date.getFullYear(), date.getMonth());
+    this.calendar = this.calendarBuilder.buildMonth(
+      date.getFullYear(),
+      date.getMonth()
+    );
     this.onDisable();
   }
   genList(n: number, input: 'year' | 'month') {
@@ -85,7 +97,11 @@ export class DatepickerComponent implements OnInit, AfterViewChecked, AfterViewI
     for (let i: number = 0; i < n; i++) {
       // Generate years
       if (input === 'year') {
-        list.push(new Date(actualYear + i, 0).toLocaleString('en-US', { year: 'numeric' }));
+        list.push(
+          new Date(actualYear + i, 0).toLocaleString('en-US', {
+            year: 'numeric',
+          })
+        );
         // Generate months
       } else {
         list.push(new Date(1970, i).toLocaleString('en-US', { month: 'long' }));
@@ -132,6 +148,7 @@ export class DatepickerComponent implements OnInit, AfterViewChecked, AfterViewI
       .replaceAll(' ', '-');
     this.calendarVisible = false;
     this.disabledDatesService.addDate(date);
+    this.change.emit(date);
   }
   onInputFieldClick() {
     this.calendarVisible = !this.calendarVisible;
@@ -141,12 +158,14 @@ export class DatepickerComponent implements OnInit, AfterViewChecked, AfterViewI
     const currentMonth = this.monthIndex;
     const filteredDates = this.disabledDatesService
       .getDates()
-      .filter(item => {
-        return item.getFullYear() === currentYear && item.getMonth() === currentMonth;
+      .filter((item) => {
+        return (
+          item.getFullYear() === currentYear && item.getMonth() === currentMonth
+        );
       })
-      .map(item => item.getDate());
+      .map((item) => item.getDate());
 
-    this.calendar.current = this.calendar.current.map(item => {
+    this.calendar.current = this.calendar.current.map((item) => {
       return {
         value: item.value,
         disabled: filteredDates.includes(item.value),
