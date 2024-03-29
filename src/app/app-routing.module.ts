@@ -8,14 +8,19 @@ import { HomeComponent } from './home/home.component';
 import { AuthGuard } from 'src/helpers/auth.guard';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { ProfileComponent } from './profile/profile.component';
+import { AboutUsComponent } from './about-us/about-us.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'cart', component: CartComponent, canActivate: [AuthGuard] },
-  { path: 'userprofile', component: UserProfileComponent, canActivate: [AuthGuard] },
-  { path: 'ticket-list', component: TicketListComponent },
   { path: 'pass-list', component: PassListComponent },
+  { path: 'about-us', component: AboutUsComponent },
+  { path: 'cart', component: CartComponent, canActivate: [AuthGuard] },
+  {
+    path: 'userprofile',
+    component: UserProfileComponent,
+    canActivate: [AuthGuard],
+  },
+  { path: 'ticket-list', component: TicketListComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
 ];
 
