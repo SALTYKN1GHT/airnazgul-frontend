@@ -1,126 +1,92 @@
-import { Component, OnInit } from '@angular/core';
-import { TicketViewModel } from '../../interfaces/ticket';
-import { NotificationService } from '../../services/notification.service';
-import { SearchInput } from 'src/interfaces/search-input';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { HttpService } from 'src/services/http.service';
-import { Destination } from 'src/interfaces/destination';
+import { Component } from '@angular/core';
+import { Ticket } from '../../interfaces/ticket';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { TicketService } from 'src/services/ticket.service';
 
 @Component({
   selector: 'app-ticket-list',
   templateUrl: './ticket-list.component.html',
   styleUrls: ['./ticket-list.component.scss'],
 })
-export class TicketListComponent implements OnInit {
-  public departures: TicketViewModel[] = [];
-  public returns: TicketViewModel[] = [];
+export class TicketListComponent {
+  public returnStatus: boolean = false;
+  public departures: Ticket[] = [];
+  public returns: Ticket[] = [];
+  private morningHours: number[] = [4.1, 4.4, 5.4, 5.9, 6.3, 6.8, 7.2, 7.6];
+  private beforenHours: number[] = [8.1, 8.5, 9.3, 9.7, 10.2, 10.6, 11.3, 11.8];
+  private afternHours: number[] = [
+    12.2, 12.7, 13.1, 13.5, 14.3, 14.8, 15.2, 15.4,
+  ];
+  private eveningHours: number[] = [
+    16.3, 16.8, 17.5, 17.7, 18.1, 18.6, 19.2, 19.6,
+  ];
 
   constructor(
-    private httpService: HttpService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private ticketService: TicketService
   ) {
     this.activatedRoute.queryParams.subscribe(
       async (input: Record<string, string>) => {
+        this.departures = [];
+        this.returns = [];
+        // Get "fromLoc" destination details from backend
         const from = await fetch(
-          `${environment.apiURL}/api/destinations/${input['from']}`,
+          `${environment.apiURL}/api/destinations/${input['fromLoc']}`,
           { method: 'GET', headers: { 'Content-Type': 'application/json' } }
         );
         const fromJSON = await from.json();
 
+        // Get "toLoc" destination details from backend
         const to = await fetch(
-          `${environment.apiURL}/api/destinations/${input['to']}`,
+          `${environment.apiURL}/api/destinations/${input['toLoc']}`,
           { method: 'GET', headers: { 'Content-Type': 'application/json' } }
         );
         const toJSON = await to.json();
-        //departures
-        let createdTicket: TicketViewModel = {
-          departure: fromJSON,
-          arrival: toJSON,
-          departureTime: new Date(input['departure']),
-          arrivalTime: new Date(input['return']),
-          date: Date.now().toString(),
-          distance: 258,
-          flightTime: '2h 10m',
-          price: 1000,
-        };
 
-        this.departures.push(createdTicket);
+        let newTicket: Ticket = ticketService.genTicket(
+          fromJSON,
+          toJSON,
+          input['departureDate'],
+          this.morningHours[
+            Math.floor(Math.random() * this.morningHours.length)
+          ]
+        );
+        let newTicket2: Ticket = ticketService.genTicket(
+          fromJSON,
+          toJSON,
+          input['departureDate'],
+          this.beforenHours[
+            Math.floor(Math.random() * this.beforenHours.length)
+          ]
+        );
 
+        this.departures.push(newTicket);
+        this.departures.push(newTicket2);
+
+        //Return ticket creation if there is return
         if (input['checkstatus']) {
-          //return
-          let createdTicket: TicketViewModel = {
-            departure: fromJSON,
-            arrival: toJSON,
-            departureTime: new Date(input['departure']),
-            arrivalTime: new Date(input['return']),
-            date: Date.now().toString(),
-            distance: 258,
-            flightTime: '2h 10m',
-            price: 1000,
-          };
-
-          this.returns.push(createdTicket);
+          this.returnStatus = true;
+          let newTicket: Ticket = ticketService.genTicket(
+            toJSON,
+            fromJSON,
+            input['departureDate'],
+            this.afternHours[
+              Math.floor(Math.random() * this.afternHours.length)
+            ]
+          );
+          let newTicket2: Ticket = ticketService.genTicket(
+            toJSON,
+            fromJSON,
+            input['departureDate'],
+            this.eveningHours[
+              Math.floor(Math.random() * this.eveningHours.length)
+            ]
+          );
+          this.returns.push(newTicket);
+          this.returns.push(newTicket2);
         }
-        console.log(this.departures, this.returns);
       }
     );
   }
-
-  ngOnInit(): void {
-    // this.searchInputCompleted.subscribe(result => {
-    //   if (result) {
-    //     this.httpService
-    //       .get<Destination[]>(
-    //         `destinations/filter/${this.searchInput.from?.settlement}/${this.searchInput.to?.settlement}`
-    //       )
-    //       .subscribe(destinations => {
-    //         this.generateTicketList(destinations);
-    //       });
-    //   }
-    // });
-  }
-
-  public onClick(event: MouseEvent) {
-    console.log('Component clicked');
-  }
-
-  // generateTicketList(searchInput: SearchInput) {
-  //   if (this.searchInput.from == null || this.searchInput.to == null) {
-  //     throw new Error('From or To parameter are null, please fill it correctly!');
-  //   }
-
-  //   //departures
-  //   let createdTicket: TicketViewModel = {
-  //     departure: searchInput.departure,
-  //     arrival: destinations[1],
-  //     departureTime: Date.now().toString(),
-  //     arrivalTime: Date.now().toString(),
-  //     date: Date.now().toString(),
-  //     distance: 258,
-  //     flightTime: '2h 10m',
-  //     price: 1000,
-  //   };
-
-  //   this.departures.push(createdTicket);
-  //   console.log(this.departures);
-
-  //   if (this.searchInput.checkstatus) {
-  //     //return
-  //     let createdTicket: TicketViewModel = {
-  //       departure: destinations[1],
-  //       arrival: destinations[0],
-  //       departureTime: Date.now().toString(),
-  //       arrivalTime: Date.now().toString(),
-  //       date: Date.now().toString(),
-  //       distance: 258,
-  //       flightTime: '2h 10m',
-  //       price: 1000,
-  //     };
-
-  //     this.returns.push(createdTicket);
-  //     console.log(this.returns);
-  //   }
-  // }
 }

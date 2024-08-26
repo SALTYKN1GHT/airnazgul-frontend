@@ -9,6 +9,9 @@ html {
   font-family: "Outfit", sans-serif;
   background-color: black;
 }
+.form-input {
+  @apply w-full px-3 py-1 border border-gray-400 rounded-lg focus:outline-none;
+}
 
 .modal-backdrop {
   background-color: rgba($color: #000000, $alpha: 0) !important;

@@ -10,7 +10,8 @@ module.exports = {
         lg: "0 8px 16px var(--tw-shadow-color, rgba(0, 0, 0, 0.5))",
       },
       boxShadow: {
-        input: "-3px 3px 4px rgba(0, 0, 0, 0.4)",
+        soft: "-3px 3px 4px rgba(0, 0, 0, 0.25)",
+        soft_lighter: "-3px 3px 4px rgba(0, 0, 0, 0.15)",
         sharp: "0px 3px 1px rgba(0, 0, 0, 0.25)",
       },
       colors: { primary: "#2e7b4e" },

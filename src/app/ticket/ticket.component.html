@@ -1,36 +1,163 @@
-
-<div *ngIf="inputTicket" class=" container-fluid ticket">
-  <div class="row justify-content-between">
-    <div class="col-md-auto row departure">
-      <div class=" col-md-auto icon">
-        <img [src]="imagePathDeparture" alt="{{ inputTicket.departure.settlement }}" class="img-fluid rounded">
+<div
+  *ngIf="ticket"
+  class="flex flex-row justify-between font-outfit border-[1px] border-gray-200 shadow-soft rounded-lg p-2 mb-2 hover:bg-blue-50 ticket"
+>
+  <div class="flex justify-between w-9/12">
+    <!-- DEPARTURE DATA -->
+    <div class="flex align-middle basis-full ticket-left">
+      <div class="flex flex-col justify-center px-2">
+        <img
+          [src]="imagePathDeparture"
+          alt="{{ ticket.departure.settlement }}"
+          class="w-20"
+        />
       </div>
-      <div class=" col-md-auto details">
-        <span>Depart at</span>
-        <div class="time">{{inputTicket.departureTime | date}}</div>
-        <div class="date">{{inputTicket.date | date:"HH:mm"}}</div>
-        <div class="location">{{inputTicket.departure.dest_code}} - {{inputTicket.departure.settlement}}, {{inputTicket.departure.realm}}</div>
-      </div>
-    </div>
-    <div class="col-md-auto row  flex-row-reverse arrival">
-      <div class="col-md-auto icon">
-        <img [src]="imagePathArrival" alt="{{ inputTicket.arrival.settlement }}" class="img-fluid rounded">
-      </div>
-      <div class=" col-md-auto text-end details">
-        <span>Arrive at</span>
-        <div class="time">{{inputTicket.arrivalTime | date}}</div>
-        <div class="date">{{inputTicket.date | date:"HH:mm"}}</div>
-        <div class="location">{{inputTicket.arrival.dest_code}} - {{inputTicket.arrival.settlement}}, {{inputTicket.arrival.realm}}</div>
-      </div>
-    </div>
-    <div class="col-md-auto misc">
-      <div class="distance-time">dist. {{inputTicket.distance}} km | time {{inputTicket.flightTime}}</div>
-      <div class="row shop">
-        <div class="col-md-auto price">{{ inputTicket.price }} $
-          <div class="itemNo">2 persons (tax included)</div>
+      <div class="flex flex-col justify-end pl-2 align-middle">
+        <div class="text-sm">Depart at</div>
+        <div class="text-2xl">
+          {{ ticket.departureHour }}
         </div>
-        <button class="col-md-auto btn btn-primary"><fa-icon [icon]="faShoppingCart"></fa-icon></button>
+        <div class="text-xs time">{{ ticket.travelDate | date }}</div>
+        <div class="font-light">
+          {{ ticket.departure.dest_code }} - {{ ticket.departure.settlement }},
+          {{ ticket.departure.realm }}
+        </div>
       </div>
+    </div>
+    <!-- FLIGHT DISTANCE & TIME -->
+    <div class="pt-2 -mx-24 text-center basis-full w-72">
+      <svg
+        class="arrow"
+        viewBox="0 0 383 32"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M0.666664 26.5053C0.666664 29.4508 3.05448 31.8387 6 31.8387C8.94552 31.8387 11.3333 29.4508 11.3333 26.5053C11.3333 23.5598 8.94552 21.172 6 21.172C3.05448 21.172 0.666665 23.5598 0.666664 26.5053ZM178.5 1.00002L178.5 1.50804e-05L178.5 1.00002ZM383 26.504L374.691 18.4858L371.901 29.6908L383 26.504ZM6 26.5053C6.37526 27.4322 6.37522 27.4323 6.37543 27.4322C6.37582 27.432 6.37627 27.4318 6.37704 27.4315C6.3786 27.4309 6.38112 27.4299 6.38459 27.4285C6.39154 27.4257 6.40233 27.4214 6.41694 27.4155C6.44616 27.4039 6.4907 27.3862 6.55048 27.3626C6.67005 27.3155 6.85061 27.2451 7.09165 27.1528C7.57374 26.9684 8.29778 26.6967 9.25973 26.3502C11.1836 25.6574 14.0592 24.6655 17.8542 23.4742C25.4442 21.0916 36.7118 17.9114 51.3992 14.73C80.774 8.36726 123.828 2.00002 178.5 2.00002L178.5 1.50804e-05C123.672 1.50804e-05 80.476 6.38543 50.9758 12.7753C36.2257 15.9703 24.8996 19.1664 17.2552 21.566C13.433 22.7659 10.5312 23.7666 8.58206 24.4685C7.60749 24.8195 6.87108 25.0958 6.37685 25.2849C6.12974 25.3795 5.94317 25.4523 5.81765 25.5017C5.75489 25.5264 5.70739 25.5453 5.67522 25.5582C5.65913 25.5646 5.64688 25.5695 5.63846 25.5729C5.63425 25.5746 5.631 25.5759 5.62872 25.5768C5.62757 25.5773 5.62658 25.5777 5.62601 25.5779C5.62525 25.5782 5.62474 25.5784 6 26.5053ZM178.5 2.00002C268.218 2.00002 348.203 19.1448 374.038 25.3034L374.502 23.3579C348.599 17.1832 268.442 1.50804e-05 178.5 1.50804e-05V2.00002Z"
+          fill="#9C9C9C"
+        />
+      </svg>
+      <div class="text-sm font-light">
+        dist. {{ ticket.distance }} km | time {{ ticket.flightTime }}
+      </div>
+    </div>
+    <!-- ARRIVAL DATA -->
+    <div class="flex justify-end basis-full">
+      <div class="flex flex-col justify-center pr-2 text-right">
+        <div class="text-sm">Arrive at</div>
+        <div class="text-2xl">
+          {{ ticket.arrivalHour }}
+        </div>
+        <div class="text-xs time">{{ ticket.travelDate | date }}</div>
+        <div class="font-light">
+          {{ ticket.arrival.dest_code }} - {{ ticket.arrival.settlement }},
+          {{ ticket.arrival.realm }}
+        </div>
+      </div>
+      <div class="flex flex-col justify-center px-2">
+        <img
+          [src]="imagePathArrival"
+          alt="{{ ticket.arrival.settlement }}"
+          class="w-20"
+        />
+      </div>
+    </div>
+  </div>
+  <!-- PRICE SECTION -->
+  <div class="flex flex-row justify-between w-3/12 pl-3">
+    <div class="flex flex-col justify-between">
+      <div class="text-sm">Price:</div>
+      <p class="text-4xl font-bold">{{ ticket.price }} $</p>
+      <p class="text-sm text-center text-gray-500">(tax included)</p>
+    </div>
+
+    <!-- BUY BUTTON -->
+    <div *ngIf="!cartView" class="flex flex-col justify-between">
+      <div class="text-sm font-bold text-center">Buy now!</div>
+      <button
+        class="flex items-center justify-center w-24 h-16 rounded-lg bg-[#16A2E1]"
+        (click)="onClickBuy()"
+      >
+        <div class="relative">
+          <svg
+            class="absolute top-0 bottom-0 left-0 right-0 z-50"
+            width="40px"
+            height="40px"
+            viewBox="0 0 24 24"
+            fill="#fff"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              class="cart-handle-fade"
+              id="cart"
+              d="M4 0.75H1C0.447715 0.75 0 1.19772 0 1.75V2.25C0 2.80228 0.447715 3.25 1 3.25H3.0119L5.73626 14.7312C6.18267 16.6125 7.84065 17.9508 9.76471 17.9987V18H17.5874C19.5362 18 21.2014 16.5956 21.5301 14.6747L22.7857 7.33734C22.9947 6.11571 22.0537 5 20.8143 5H5.99657L5.21623 1.7114C5.08251 1.14787 4.57918 0.75 4 0.75Z"
+            />
+            <path
+              class="cart-handle-fade"
+              id="left-wheel"
+              d="M10 21C10 22.1046 9.10457 23 8 23C6.89543 23 6 22.1046 6 21C6 19.8954 6.89543 19 8 19C9.10457 19 10 19.8954 10 21Z"
+            />
+            <path
+              class="cart-handle-fade"
+              id="right-wheel"
+              d="M21 21C21 22.1046 20.1046 23 19 23C17.8954 23 17 22.1046 17 21C17 19.8954 17.8954 19 19 19C20.1046 19 21 19.8954 21 21Z"
+            />
+          </svg>
+          <svg
+            class="success-tick-fade"
+            width="50"
+            height="50"
+            viewBox="0 0 396 396"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M102.199 161.397C91.9342 150.965 75.1559 150.83 64.724 161.095C54.2921 171.361 54.1569 188.139 64.4221 198.571L102.199 161.397ZM64.4221 198.571L146.111 281.587L183.889 244.413L102.199 161.397L64.4221 198.571Z"
+              fill="white"
+            />
+            <path
+              d="M330.02 143.606C340.731 133.631 341.328 116.863 331.354 106.153C321.38 95.4421 304.611 94.8451 293.901 104.819L330.02 143.606ZM145.94 242.607L126.547 260.667L162.667 299.453L182.06 281.393L145.94 242.607ZM293.901 104.819L145.94 242.607L182.06 281.393L330.02 143.606L293.901 104.819Z"
+              fill="white"
+            />
+          </svg>
+        </div>
+      </button>
+    </div>
+    <div *ngIf="cartView" class="flex flex-col justify-between">
+      <div class="text-sm text-center">Seats:</div>
+      <div class="flex flex-row gap-1">
+        <button
+          type="button"
+          class="w-6 h-6 font-bold text-center bg-white border rounded-lg outline-none shadow-sharp"
+          (click)="onClickSubtract()"
+        >
+          -
+        </button>
+        <input
+          id="Seats"
+          type="text"
+          placeholder="1"
+          min="1"
+          tabindex="-1"
+          [value]="ticket.qty || 1"
+          class="w-12 h-6 py-2 text-center border rounded-lg outline-none pointer-events-none shadow-sharp"
+        />
+        <button
+          type="button"
+          class="w-6 h-6 font-bold text-center bg-white border rounded-lg outline-none shadow-sharp"
+          (click)="onClickBuy()"
+        >
+          +
+        </button>
+      </div>
+
+      <button
+        class="bg-[#2d4946] px-3 h-8 shadow-sharp rounded-lg hover:bg-[#2CB13A] transition-all text-white"
+        type="submit"
+        (click)="onClickRemove()"
+      >
+        Remove
+      </button>
     </div>
   </div>
 </div>

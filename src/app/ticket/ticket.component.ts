@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { TicketViewModel } from '../../interfaces/ticket';
-import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { Ticket } from '../../interfaces/ticket';
+import { parseToProfPicsNames } from 'src/utils/util-functions';
+import { CartService } from 'src/services/cart.service';
 
 @Component({
   selector: 'app-ticket',
@@ -8,23 +9,31 @@ import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./ticket.component.scss'],
 })
 export class TicketComponent {
-  @Input() public inputTicket: TicketViewModel;
-
-  faShoppingCart = faShoppingCart;
-  imagePathDeparture: string = '';
-  imagePathArrival: string = '';
+  @Input() public ticket: Ticket & { qty?: number };
+  @Input() public seats: string;
+  @Input() public cartView: boolean = false;
+  public imagePathDeparture: string = '';
+  public imagePathArrival: string = '';
+  constructor(private cartService: CartService) {}
 
   ngOnInit() {
-    this.imagePathDeparture = `assets/images/dest_profile_pics/shire.png`;
-    this.imagePathArrival = `assets/images/dest_profile_pics/${this.convertToUnderscoreFormat(
-      this.inputTicket.arrival.settlement
+    this.imagePathDeparture = `assets/images/dest_profile_pics/${parseToProfPicsNames(
+      this.ticket.departure.settlement
+    )}.png`;
+    this.imagePathArrival = `assets/images/dest_profile_pics/${parseToProfPicsNames(
+      this.ticket.arrival.settlement
     )}.png`;
   }
-
-  convertToUnderscoreFormat(text: string) {
-    const result = text.toLowerCase().replace(/\s+/g, '-');
-    console.log(result);
-
-    return result;
+  onClickBuy() {
+    const { qty: _, ...rest } = this.ticket;
+    this.cartService.addTicket(rest);
+  }
+  onClickSubtract() {
+    const { qty: _, ...rest } = this.ticket;
+    this.cartService.removeTicket(rest);
+  }
+  onClickRemove() {
+    const { qty: _, ...rest } = this.ticket;
+    this.cartService.removeTicket(rest, true);
   }
 }

@@ -23,3 +23,18 @@ export function closeModal(
   emitter?.emit(false);
   console.log(isVisible);
 }
+export function parseToProfPicsNames(destination: string): string {
+  return destination
+    .toLocaleLowerCase()
+    .split(' ')
+    .join('-')
+    .split("'")
+    .join('');
+}
+export function isDescendant(childNode: Node, parentNode: Node): boolean {
+  if (childNode === parentNode) return true;
+  if (childNode === document.body || childNode.parentElement === null)
+    return false;
+
+  return isDescendant(childNode.parentElement, parentNode);
+}

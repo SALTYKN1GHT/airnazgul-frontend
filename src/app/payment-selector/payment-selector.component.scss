@@ -1,0 +1,6 @@
+.payment-item {
+  @apply w-full border-[1px] rounded-lg focus-within:border-blue-600 shadow;
+  &:not(:last-child) {
+    @apply mb-2;
+  }
+}

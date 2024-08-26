@@ -1,59 +1,81 @@
-<div class="py-2 px-3 bg-[rgba(255,255,255,0.9)] rounded-md">
-  <h5 *ngIf="displayTicketsTitle" class="font-medium">TICKETS</h5>
-  <div class="flex items-center justify-evenly searchbar">
-    <div>
-      <div class="text-gray-600">From:</div>
-      <app-dest-list
-        [destList]="getRidOfMordor()"
-        [searchBarType]="'Realm, settlement...'"
-        (searchListChangeEvent)="addItem($event)"
-        (onSelect)="getDestinations($event, 0)"
-      ></app-dest-list>
-    </div>
-    <div>
-      <div class="text-gray-600">To:</div>
-      <app-dest-list
-        [destList]="filteredDestination"
-        [searchBarType]="'Realm, settlement...'"
-        (searchListChangeEvent)="addItem($event)"
-        (onSelect)="getDestinations($event, 1)"
-      ></app-dest-list>
-      <p class="text-sm text-center text-red-500" *ngIf="noReturn">
-        Remember: No return from Mordor!
-      </p>
-    </div>
-    <div>
-      <div class="text-gray-600">Departure</div>
-      <app-datepicker
-        [disabledDates]="blacklistedDates"
-        (onSelect)="blackListDate($event, 0)"
-      ></app-datepicker>
-    </div>
-    <div>
-      <div class="pl-8">
-        <input
-          class="shadow"
-          id="Return"
-          type="checkbox"
-          [disabled]="noReturn"
-          (change)="getCheckStatus($event)"
-        />
-        <label for="Return" class="text-gray-600"> Return </label>
+<div class="bg-[rgba(255,255,255,0.9)] rounded-md">
+  <h5 *ngIf="displayTicketsTitle" class="pt-2 pl-4 font-medium">TICKETS</h5>
+  <div class="px-6 pt-1">
+    <div class="flex items-center justify-between searchbar">
+      <div>
+        <div class="pl-4 text-gray-500">From:</div>
+        <app-dest-list
+          [destList]="getRidOfMordor()"
+          [initialValue]="getDestinationById(queryParams.fromLoc)"
+          [searchBarType]="'Realm, settlement...'"
+          (searchListChangeEvent)="addItem($event)"
+          (onSelect)="getDestinations($event, 0)"
+        ></app-dest-list>
       </div>
-      <app-datepicker
-        [disabledDates]="blacklistedDates"
-        (onSelect)="blackListDate($event, 1)"
-        [disabled]="returnChecked"
-      ></app-datepicker>
-    </div>
-    <div>
-      <button
-        class="bg-[#2d4946] px-3 h-8 shadow-sharp rounded-xl hover:bg-[#2CB13A] transition-all text-white"
-        type="submit"
-        (click)="onSearch()"
-      >
-        Search
-      </button>
+      <div>
+        <div class="pl-4 text-gray-500">To:</div>
+        <app-dest-list
+          [destList]="filteredDestination"
+          [initialValue]="getDestinationById(queryParams.toLoc)"
+          [searchBarType]="'Realm, settlement...'"
+          (searchListChangeEvent)="addItem($event)"
+          (onSelect)="getDestinations($event, 1)"
+        ></app-dest-list>
+        <p class="text-sm text-center text-red-500" *ngIf="noReturn">
+          Remember: No return from Mordor!
+        </p>
+      </div>
+      <div>
+        <div class="pl-4 text-gray-500">Departure</div>
+        <app-datepicker
+          [intialValue]="getDate(queryParams.departureDate)"
+          [disabledDates]="blacklistedDates"
+          (onSelect)="blackListDate($event, 0)"
+        ></app-datepicker>
+      </div>
+      <div>
+        <div class="pl-5">
+          <input
+            class="shadow"
+            id="Return"
+            type="checkbox"
+            [checked]="isChecked && !noReturn"
+            [disabled]="noReturn"
+            [(ngModel)]="isChecked"
+            (change)="onReturnClick($event)"
+          />
+          <label for="Return" class="pl-1 text-gray-500"> Return </label>
+        </div>
+        <app-datepicker
+          [intialValue]="getDate(queryParams.returnDate)"
+          [disabledDates]="blacklistedDates"
+          (onSelect)="blackListDate($event, 1)"
+          [disabled]="!isChecked || queryParams.returnChecked === false"
+        ></app-datepicker>
+      </div>
+      <div>
+        <div>
+          <label for="Seats" class="pl-3 text-gray-500">Seats</label>
+        </div>
+        <div>
+          <input
+            id="Seats"
+            type="number"
+            placeholder="1"
+            min="1"
+            class="w-16 h-8 py-2 pl-3 text-center border outline-none rounded-xl shadow-sharp"
+          />
+        </div>
+      </div>
+      <div>
+        <button
+          class="bg-[#2d4946] px-3 h-8 shadow-sharp rounded-xl hover:bg-[#2CB13A] transition-all text-white"
+          type="submit"
+          (click)="onSearch()"
+        >
+          Search
+        </button>
+      </div>
     </div>
   </div>
 </div>

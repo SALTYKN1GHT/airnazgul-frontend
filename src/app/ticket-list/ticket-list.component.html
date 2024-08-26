@@ -1,25 +1,26 @@
 <div class="mt-4 bg-white rounded-xl ticket-list">
-  <h5 class="pt-2 pl-4 font-semibold">TICKETS AVAILABLE</h5>
+  <h4 class="pt-2 pl-4 text-lg font-medium font-outfit">TICKETS AVAILABLE</h4>
   <app-destinations-input></app-destinations-input>
-  <div class="filter"></div>
-  <div class="tickets">
+  <div class="px-6 tickets">
     <div class="departures">
-      <h5>Departures</h5>
-      <app-ticket
-        *ngFor="let ticket of departures"
-        [inputTicket]="ticket"
-      ></app-ticket>
+      <h5 class="py-2 text-lg">Departures</h5>
+      <div>
+        <app-ticket
+          *ngFor="let item of departures"
+          [ticket]="item"
+          [cartView]="false"
+        ></app-ticket>
+      </div>
     </div>
-    <div class="returns">
-      <h5>Returns</h5>
-      <app-ticket
-        *ngFor="let ticket of returns"
-        [inputTicket]="ticket"
-      ></app-ticket>
+    <div *ngIf="returnStatus" class="returns">
+      <h5 class="py-2 text-lg">Returns</h5>
+      <app-ticket *ngFor="let ticket of returns" [ticket]="ticket"></app-ticket>
     </div>
   </div>
-  <div class="passes">
-    <h2>PASS OFFERSS <span>- BEST PRICE per FLIGHT</span></h2>
+  <div class="px-6 passes">
+    <h5 class="py-2 text-lg">
+      PASS OFFERSS<span>- BEST PRICE per FLIGHT</span>
+    </h5>
+    <!-- <app-pass></app-pass> -->
   </div>
-  <app-pass></app-pass>
 </div>

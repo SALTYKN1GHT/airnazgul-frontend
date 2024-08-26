@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { HttpService } from '../services/http.service';
-import { SearchInput } from 'src/interfaces/search-input';
 
 @Component({
   selector: 'app-root',
@@ -9,18 +8,8 @@ import { SearchInput } from 'src/interfaces/search-input';
 })
 export class AppComponent {
   title = 'frontend';
-  searchInput: SearchInput;
 
   constructor(private httpService: HttpService) {}
 
-  ngOnInit() {
-    this.fetchTicketData();
-  }
-
-  fetchTicketData() {
-    this.httpService.get('tickets').subscribe((response) => {
-      // console.log(response);
-      // Do something with the ticket data
-    });
-  }
+  ngOnInit() {}
 }

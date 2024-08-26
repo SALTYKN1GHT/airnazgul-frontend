@@ -20,7 +20,7 @@ import { FooterComponent } from './footer/footer.component';
 import { CarouselComponent } from './carousel/carousel.component';
 import { HeroComponent } from './hero/hero.component';
 import { HomeComponent } from './home/home.component';
-import { NotificationService } from 'src/services/notification.service';
+// import { NotificationService } from 'src/services/notification.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from '../helpers/token.interceptor';
 import { UserProfileComponent } from './user-profile/user-profile.component';
@@ -30,6 +30,10 @@ import { ProfileComponent } from './profile/profile.component';
 import { AirnazgulSvgComponent } from './airnazgul-svg/airnazgul-svg.component';
 import { CarouselModule } from '@coreui/angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AboutUsComponent } from './about-us/about-us.component';
+import { ContactUsComponent } from './contact-us/contact-us.component';
+import { CheckoutPageComponent } from './checkout-page/checkout-page.component';
+import { PaymentSelectorComponent } from './payment-selector/payment-selector.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +58,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BillingInfoComponent,
     ProfileComponent,
     AirnazgulSvgComponent,
+    AboutUsComponent,
+    ContactUsComponent,
+    CheckoutPageComponent,
+    PaymentSelectorComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,12 +73,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserAnimationsModule,
   ],
   providers: [
-    NotificationService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
-      multi: true,
-    },
+    // NotificationService,
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: TokenInterceptor,
+    //   multi: true,
+    // },
   ],
   bootstrap: [AppComponent],
 })

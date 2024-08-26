@@ -1,18 +1,80 @@
-<div class="container border rounded bg-white p-4">
-    <div class="row">
-        <div class="col-md-4">
-            <img [src]="imagePath" alt="{{ realm }}" class="img-fluid rounded">
-        </div>
-        <div class="col-md-4">
-            <h3>{{ realm | uppercase }} PASS</h3>
-            <ul>
-                <li *ngFor="let settlement of settlements">{{ settlement }}</li>
-            </ul>
-        </div>
-        <div class="col-md-4">
-            <p>Visit all locations of a realm for less money!</p>
-            <h4>Price: {{ price }} $</h4>
-            <button class="btn btn-primary">SHOP NOW! <fa-icon [icon]="faShoppingCart"></fa-icon></button>
-        </div>
+<div class="h-48 mt-3 font-outfit">
+  <div
+    class="flex flex-row overflow-hidden border-[1px] border-gray-300 rounded-lg shadow-soft"
+  >
+    <!-- COVER IMAGE -->
+    <div class="w-5/12">
+      <figure class="relative">
+        <img [src]="coverImgPath" alt="{{ realm }}" class="h-48" />
+        <figcaption
+          class="absolute text-4xl font-semibold text-white left-3 bottom-2"
+        >
+          {{ realm | uppercase }} PASS
+        </figcaption>
+      </figure>
     </div>
+    <div class="flex flex-row w-7/12">
+      <!-- TICKET LIST -->
+      <div class="flex flex-col justify-center w-1/2 gap-1 px-4 py-2">
+        <div
+          *ngFor="let tickets of destList"
+          class="flex items-start gap-2 flew-row"
+        >
+          <img
+            class="w-9 h-9"
+            src="{{ tickets[0].imgUrl }}"
+            alt="{{ tickets[0].title }}"
+          />
+          <div class="w-full">
+            <svg
+              viewBox="0 0 179 19"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M0.00287766 13.2719C0.0028774 16.2174 2.39069 18.6052 5.33621 18.6052C8.28173 18.6052 10.6695 16.2174 10.6695 13.2719C10.6695 10.3264 8.28173 7.93857 5.33621 7.93857C2.39069 7.93857 0.00287792 10.3264 0.00287766 13.2719ZM92.3414 1.76228L92.3457 2.76227L92.3414 1.76228ZM178.425 14.6519L170.757 6.0186L167.114 16.976L178.425 14.6519ZM5.33621 13.2719C5.65441 14.2199 5.65432 14.22 5.65436 14.2199C5.65454 14.2199 5.65471 14.2198 5.65507 14.2197C5.6558 14.2195 5.65705 14.219 5.6588 14.2185C5.66231 14.2173 5.66786 14.2154 5.67545 14.2129C5.69063 14.2079 5.71395 14.2002 5.74536 14.1899C5.80819 14.1693 5.90339 14.1384 6.03054 14.0979C6.28485 14.0168 6.66695 13.897 7.17347 13.7441C8.18653 13.4383 9.69726 12.9998 11.6787 12.4722C15.6416 11.417 21.4871 10.0055 28.9995 8.58602C44.0246 5.74705 65.7148 2.87706 92.3457 2.76227L92.3371 0.762288C65.568 0.877676 43.7556 3.7625 28.6281 6.6208C21.0642 8.04998 15.1709 9.47268 11.1641 10.5396C9.16067 11.073 7.62881 11.5175 6.59549 11.8295C6.07883 11.9854 5.68679 12.1082 5.42276 12.1925C5.29074 12.2346 5.19072 12.267 5.12312 12.2892C5.08932 12.3002 5.06363 12.3087 5.04609 12.3145C5.03733 12.3174 5.0306 12.3197 5.02591 12.3212C5.02357 12.322 5.02174 12.3226 5.02043 12.3231C5.01977 12.3233 5.01916 12.3235 5.01883 12.3236C5.01836 12.3238 5.01801 12.3239 5.33621 13.2719ZM92.3457 2.76227C129.571 2.60181 156.684 8.94925 169.599 12.7711L170.166 10.8533C157.102 6.98712 129.793 0.600834 92.3371 0.762288L92.3457 2.76227Z"
+                fill="#9C9C9C"
+              />
+            </svg>
+
+            <div class="flex items-center justify-between w-full font-light">
+              <div>
+                {{ tickets[0].destCode }}
+              </div>
+              <div>
+                {{ tickets[1].destCode }}
+              </div>
+            </div>
+          </div>
+          <img
+            class="w-9 h-9"
+            src="{{ tickets[1].imgUrl }}"
+            alt="{{ tickets[1].title }}"
+          />
+        </div>
+      </div>
+      <!-- PRICE SECTION -->
+      <div class="flex flex-col justify-between w-1/2 p-3">
+        <div class="text-2xl">
+          Visit all locations of a realm for less money!
+        </div>
+        <div class="flex items-end gap-1">
+          <span class="text-4xl font-semibold">{{ passPrice }}$</span>
+          <span class="text-sm text-gray-500">(tax included)</span>
+        </div>
+        <div class="">
+          <button
+            class="flex w-full h-12 items-center justify-evenly rounded-lg bg-[#16A2E1]"
+          >
+            <p class="text-2xl font-normal text-white">SHOP NOW!</p>
+            <img
+              class="h-8"
+              src="../../assets/images/shopping-cart.png"
+              alt="shopping-cart"
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

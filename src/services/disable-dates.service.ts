@@ -14,10 +14,13 @@ export class DisableDatesService {
   }
   removeDate(date: Date) {
     this.disabledDates = this.disabledDates.filter(
-      item =>
+      (item) =>
         item.getFullYear() !== date.getFullYear() &&
         item.getMonth() !== date.getMonth() &&
         item.getDate() !== date.getDate()
     );
+  }
+  clearDates() {
+    this.disabledDates = [];
   }
 }

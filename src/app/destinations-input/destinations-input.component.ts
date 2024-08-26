@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Destination } from 'src/interfaces/destination';
-import { SearchInput } from 'src/interfaces/search-input';
 import { HttpService } from 'src/services/http.service';
-import { NotificationService } from 'src/services/notification.service';
 
 @Component({
   selector: 'app-destinations-input',
@@ -13,16 +10,23 @@ import { NotificationService } from 'src/services/notification.service';
 })
 export class DestinationsInputComponent implements OnInit {
   public displayTicketsTitle: boolean = true;
-  public destination: Destination[] = [];
+  public destinations: Destination[] = [];
   public filteredDestination: Destination[] = [];
   public blacklistedDates: Date[] = [];
-  public returnChecked: boolean = true;
+  public isChecked: boolean;
   public selectedDestination: [Destination | null, Destination | null] = [
     null,
     null,
   ];
   public selectedDates: [Date | null, Date | null] = [null, null];
   public noReturn: boolean = false;
+  public queryParams: {
+    fromLoc: string | undefined;
+    toLoc: string | undefined;
+    departureDate: string | undefined;
+    returnDate: string | undefined;
+    returnChecked: boolean;
+  };
 
   constructor(
     private httpService: HttpService,
@@ -30,20 +34,24 @@ export class DestinationsInputComponent implements OnInit {
     private activedRoute: ActivatedRoute
   ) {
     this.httpService.get('destinations').subscribe((data) => {
-      this.destination = data as any;
+      this.destinations = data as any;
       this.filteredDestination = data as any;
     });
   }
   ngOnInit(): void {
     this.activedRoute.queryParams.subscribe((params) => {
-      console.log(params);
+      this.queryParams = params as any;
+      if (params['checkstatus']) {
+        this.isChecked = true;
+      }
+      if (!params['returnDate']) {
+        this.noReturn = true;
+      }
     });
-    this.router.events.subscribe((event) => {
-      console.log('Router events subscribe fired!');
-
+    this.router.events.subscribe(() => {
       if (this.router.url === '/') {
       } else {
-        this.displayTicketsTitle = false;
+        this.displayTicketsTitle = false; // Hides "TICKETS" if we are not on the landing page
       }
     });
   }
@@ -54,14 +62,15 @@ export class DestinationsInputComponent implements OnInit {
     });
   }
 
-  getCheckStatus(event: Event): void {
+  onReturnClick(event: Event): void {
     const target = event.target as HTMLInputElement;
-    this.returnChecked = !target.checked;
+    this.isChecked = target.checked;
   }
 
   getDestinations(destination: Destination, id: number) {
     this.selectedDestination[id] = destination;
     this.noReturn = destination.realm.includes('Mordor');
+    this.isChecked = this.isChecked && !this.noReturn;
   }
 
   onSearch() {
@@ -76,28 +85,47 @@ export class DestinationsInputComponent implements OnInit {
         .replaceAll(' ', '-');
     });
     const searchValue = {
-      from: this.selectedDestination[0]?.id,
-      to: this.selectedDestination[1]?.id,
-      departure: arr[0],
-      return: arr[1],
-      checkstatus: !this.returnChecked,
+      fromLoc: this.selectedDestination[0]?.id || this.queryParams.fromLoc,
+      toLoc: this.selectedDestination[1]?.id || this.queryParams.toLoc,
+      departureDate: arr[0],
+      returnDate: arr[1],
+      checkstatus: this.isChecked || this.queryParams.returnChecked,
     };
-
-    this.router.navigate(['ticket-list'], { queryParams: searchValue });
+    if (
+      !!searchValue.fromLoc &&
+      !!searchValue.toLoc &&
+      !!searchValue.departureDate
+    ) {
+      this.router.navigate(['ticket-list'], { queryParams: searchValue });
+    }
   }
 
   addItem(id: number): void {
-    this.filteredDestination = this.destination.filter((d) => d.id != id);
+    this.filteredDestination = this.destinations.filter((d) => d.id != id);
   }
   blackListDate(date: Date, id: number): void {
     this.blacklistedDates.push(date);
     this.selectedDates[id] = date;
-    console.log(this.selectedDates);
   }
   validate(event: Event): void {
     const date = (event.target as HTMLInputElement).value;
     if (this.blacklistedDates.includes(new Date(date))) {
       (event.target as HTMLInputElement).value = '';
     }
+  }
+  getDestinationById(id: string | undefined): Destination | undefined {
+    if (!id) {
+      return undefined;
+    }
+    const result = this.destinations.find((item) => item.id === +id);
+    this.isChecked = this.isChecked && !this.noReturn;
+    this.noReturn = !!result?.realm.includes('Mordor');
+    return result;
+  }
+  getDate(date: string | undefined) {
+    if (!date) {
+      return undefined;
+    }
+    return new Date(date);
   }
 }

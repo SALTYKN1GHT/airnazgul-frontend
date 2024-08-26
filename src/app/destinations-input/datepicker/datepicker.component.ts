@@ -5,12 +5,11 @@ import {
   ElementRef,
   EventEmitter,
   Input,
-  OnChanges,
   OnInit,
   Output,
   ViewChild,
 } from '@angular/core';
-import flatpickr from 'flatpickr';
+
 import { Calendar } from 'src/interfaces/calendar';
 import { CalendarBuilderService } from 'src/services/calendar-builder.service';
 import { DisableDatesService } from 'src/services/disable-dates.service';
@@ -25,30 +24,12 @@ export class DatepickerComponent
 {
   @Input() public disabledDates: Date[] = [];
   @Input() public disabled: boolean = false;
+  @Input() public intialValue: Date | undefined = undefined;
   @Output('onSelect') public change = new EventEmitter<Date>();
   @ViewChild('dateInputField')
   public dateInputField: ElementRef<HTMLInputElement>;
   @ViewChild('calendarContainer')
   public calendarContainer: ElementRef<HTMLDivElement>;
-
-  // public flatpickrObj: any = null;
-
-  // ngAfterViewInit(): void {
-  //   this.flatpickrObj = flatpickr(this.dateInputField?.nativeElement, {
-  //     minDate: 'today', // Disable past dates
-  //     maxDate: '9999-12-31', // Any far future date you want
-  //     dateFormat: 'Y-m-d',
-  //     onChange: (_, date: string) => this.change.emit(date),
-  //     onClose: this.restrictDate,
-  //   });
-  // }
-  // restrictDate(): void {
-  //   console.log('Date restricted!');
-  //   this.flatpickrObj?.set('disable', [...this.disabledDates]);
-  // }
-  // ngAfterViewChecked(): void {
-  //   // this.flatpickrObj?.set('disable', [...this.disabledDates]);
-  // }
   public calendar: Calendar = { previous: [], current: [], next: [] };
   public calendarVisible: boolean = false;
   public month: string = '';
@@ -78,6 +59,8 @@ export class DatepickerComponent
     this.onDisable();
   }
   ngOnInit() {
+    // this.disabledDatesService.clearDates();
+    this.disabledDates = [];
     const date = new Date();
     this.month = date.toLocaleString('en-US', { month: 'long' });
     this.monthIndex = date.getMonth();
@@ -88,6 +71,7 @@ export class DatepickerComponent
       date.getFullYear(),
       date.getMonth()
     );
+    this.selectDate(this.intialValue);
     this.onDisable();
   }
   genList(n: number, input: 'year' | 'month') {
@@ -136,8 +120,15 @@ export class DatepickerComponent
     this.dayVisible = false;
   }
   onDayClick(item: { value: number; disabled: boolean }) {
-    this.disabledDatesService.removeDate(new Date(this.actualDate));
     const date = new Date(+this.year, this.monthIndex, item.value);
+    this.selectDate(date);
+  }
+  selectDate(dateValue: Date | undefined) {
+    this.disabledDatesService.removeDate(new Date(this.actualDate));
+    const date = dateValue;
+    if (!date) {
+      return;
+    }
     this.actualDate = date
       .toLocaleString('hu-HU', {
         year: 'numeric',
@@ -146,7 +137,6 @@ export class DatepickerComponent
       })
       .replaceAll('.', '')
       .replaceAll(' ', '-');
-    this.calendarVisible = false;
     this.disabledDatesService.addDate(date);
     this.change.emit(date);
   }

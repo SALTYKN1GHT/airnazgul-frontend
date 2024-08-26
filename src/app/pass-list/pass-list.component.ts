@@ -1,44 +1,39 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpService } from 'src/services/http.service';
+import { Destination } from 'src/interfaces/destination';
+import { DestinationService } from 'src/services/destination.service';
 
 @Component({
   selector: 'app-pass-list',
   templateUrl: './pass-list.component.html',
-  styleUrls: ['./pass-list.component.scss']
+  styleUrls: ['./pass-list.component.scss'],
 })
 export class PassListComponent implements OnInit {
-  rohanDestinations: any[] = [];
-  gondorDestinations: any[] = [];
-  enedwaithDestinations: any[] = [];
-  eriadorDestinations: any[] = [];
-  rhovanionDestinations: any[] = [];
+  public gDestinations: [string, Destination[]][] = [];
 
-  constructor(private httpService: HttpService) {}
+  constructor(private destinationService: DestinationService) {}
 
   ngOnInit() {
-    this.fetchDestinations();
-  }
-
-  fetchDestinations() {
-    this.httpService.get('destinations')
-      .subscribe((data: any) => {
-        this.groupDestinationsByRealm(data);
-      });
-  }
-
-  groupDestinationsByRealm(destinations: any[]): void {
-    for (const destination of destinations) {
-      if (destination.realm === 'Rohan') {
-        this.rohanDestinations.push(destination.settlement);
-      } else if (destination.realm === 'Gondor') {
-        this.gondorDestinations.push(destination.settlement);
-      } else if (destination.realm === 'Enedwaith') {
-        this.enedwaithDestinations.push(destination.settlement);
-      } else if (destination.realm === 'Eriador') {
-        this.eriadorDestinations.push(destination.settlement);
-      } else if (destination.realm === 'Rhovanion') {
-        this.rhovanionDestinations.push(destination.settlement);
-      }
-    }
+    this.destinationService.getDestinations().subscribe((destinations) => {
+      //  'group' structure:
+      // {
+      //   Rohan: [
+      //     {
+      //       id: 13,
+      //       realm: 'Rohan',
+      //       settlement: 'Edoras',
+      //       x_coordinate: 123,
+      //       y_coordinate: 456,
+      //       dest_code: 'EDO',
+      //     },
+      //     ...
+      //   ],
+      //  Edewaith: [...],
+      //  ...
+      // }
+      const group = this.destinationService.groupByRealm(destinations);
+      delete group['Mordor'];
+      delete group['Erebor'];
+      this.gDestinations = Object.entries(group);
+    });
   }
 }
